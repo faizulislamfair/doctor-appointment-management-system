@@ -1,6 +1,6 @@
 # Doctor Appointment Management System
 
-A modern web application for managing doctor appointments. Patients can search for doctors, filter by specialization and book appointments. Doctors can view their dashboard and manage their appointments. Built with **React (Vite)**, **React Query**, **Axios**, and **Tailwind CSS**.
+A modern web application for managing doctor appointments. Patients can search for doctors, filter by specialization and book appointments. Doctors can view their dashboard and manage their appointments. Built with **React (Vite)**, **TypeScript**, **React Query**, **Axios** and **Tailwind CSS**.
 
 ---
 
@@ -10,6 +10,7 @@ A modern web application for managing doctor appointments. Patients can search f
 - [Features](#features)
 - [Tech Stack](#tech-stack)
 - [Installation](#installation)
+- [Folder Structure](#folder-structure)
 - [Usage](#usage)
 - [Limitations](#limitations)
 
@@ -36,9 +37,10 @@ A modern web application for managing doctor appointments. Patients can search f
 - Login as a doctor
 - View appointments and schedule (currently no appointments appear due to booking issue)
 
-### Responsiveness
+### Responsiveness & UI/UX
 
 - Responsive UI with Tailwind CSS
+- Basic UX Principles
 
 ---
 
@@ -62,6 +64,14 @@ cd doctor-appointment-management-system
 npm install
 npm run dev
 ```
+
+---
+
+## Folder Structure
+
+![Folder Structure](./src/assets/folder_structure.png)
+
+---
 
 ## Usage
 
