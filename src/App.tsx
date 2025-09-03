@@ -16,9 +16,8 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <Router>
         <Routes>
-          <Route path="/" element={<Navigate to="/home" replace />} />
 
-          <Route path="/home" element={<Home />} />
+          <Route path="/" element={<Home />} />
 
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
