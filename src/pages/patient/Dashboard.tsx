@@ -1,13 +1,16 @@
-"use client";
-
-import { useState, type ChangeEvent } from "react";
+import { useState } from "react";
+import type { ChangeEvent } from "react";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import api from "../../api/axios";
-import type { Doctor } from "../../types";
 import { Button } from "../../components/Button";
 import { Modal } from "../../components/Modal";
 
+interface Doctor {
+  id: string;
+  name: string;
+  specialization: string;
+  photo_url?: string;
+}
 
 interface DoctorsResponse {
   data: Doctor[];
@@ -25,7 +28,7 @@ export default function PatientDashboard() {
   // Fetch doctors
   const { data, isLoading, refetch } = useQuery<DoctorsResponse, unknown>({
     queryKey: ["doctors", page, search, specialization],
-    queryFn: async (): Promise<DoctorsResponse> => {
+    queryFn: async () => {
       const res = await api.get<DoctorsResponse>("/doctors", {
         params: { page, limit: 10, search, specialization },
       });
@@ -33,7 +36,6 @@ export default function PatientDashboard() {
     },
   });
 
-  // Book appointment
   const bookAppointment = async () => {
     if (!selectedDoctor || !date) return alert("Select a date");
 
@@ -45,22 +47,11 @@ export default function PatientDashboard() {
       alert("Appointment booked!");
       setIsModalOpen(false);
       refetch();
-    } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
-        if (error.response?.status === 401) {
-          alert("Unauthorized! Please login as a patient.");
-        } else {
-          alert(error.response?.data?.message || "An error occurred");
-        }
-      } else {
-        alert("Unexpected error occurred");
-      }
+    } catch (err: unknown) {
+      if (err instanceof Error) alert(err.message);
+      else alert("Unexpected error occurred");
     }
   };
-
-  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => setSearch(e.target.value);
-  const handleSpecializationChange = (e: ChangeEvent<HTMLSelectElement>) =>
-    setSpecialization(e.target.value);
 
   return (
     <div className="p-6">
@@ -73,35 +64,39 @@ export default function PatientDashboard() {
           placeholder="Search doctor..."
           className="border px-3 py-2 rounded"
           value={search}
-          onChange={handleSearchChange}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
         />
         <select
           className="border px-3 py-2 rounded"
           value={specialization}
-          onChange={handleSpecializationChange}
+          onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+            setSpecialization(e.target.value)
+          }
         >
           <option value="">All Specializations</option>
-          <option value="Cardiology">Cardiology</option>
-          <option value="Dermatology">Dermatology</option>
-          <option value="Endocrinology">Endocrinology</option>
-          <option value="Gastroenterology">Gastroenterology</option>
-          <option value="Neurology">Neurology</option>
-          <option value="Oncology">Oncology</option>
-          <option value="Orthopedics">Orthopedics</option>
-          <option value="Pediatrics">Pediatrics</option>
-          <option value="Psychiatry">Psychiatry</option>
-          <option value="Radiology">Radiology</option>
+            <option value="Cardiology">Cardiology</option>
+            <option value="Dermatology">Dermatology</option>
+            <option value="Endocrinology">Endocrinology</option>
+            <option value="Gastroenterology">Gastroenterology</option>
+            <option value="Neurology">Neurology</option>
+            <option value="Oncology">Oncology</option>
+            <option value="Orthopedics">Orthopedics</option>
+            <option value="Pediatrics">Pediatrics</option>
+            <option value="Psychiatry">Psychiatry</option>
+            <option value="Radiology">Radiology</option>
         </select>
         <Button onClick={() => setPage(1)}>Filter</Button>
       </div>
 
-      {/* Loading */}
       {isLoading && <p>Loading doctors...</p>}
 
-      {/* Doctor List */}
+      {/* Doctor list */}
       <div className="grid gap-7 md:grid-cols-2 lg:grid-cols-3 pt-5">
-        {data?.data?.map((doc: Doctor) => (
-          <div key={doc.id} className="border rounded p-4 shadow flex flex-col items-center">
+        {data?.data?.map((doc) => (
+          <div
+            key={doc.id}
+            className="border rounded p-4 shadow flex flex-col items-center"
+          >
             <img
               src={doc.photo_url || "/default-doctor.png"}
               alt={doc.name}

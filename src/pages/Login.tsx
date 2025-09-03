@@ -1,8 +1,5 @@
-"use client";
-
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import axios from "axios";
 import api from "../api/axios";
 
 type Role = "PATIENT" | "DOCTOR";
@@ -21,28 +18,21 @@ export default function Login() {
         role,
       });
 
-      // Save the token in localStorage
+      // Save token
       localStorage.setItem("token", res.data.token);
 
-      // Redirect based on role
+      // Redirect
       if (role === "PATIENT") navigate("/patient/dashboard");
       else navigate("/doctor/dashboard");
     } catch (err: unknown) {
-      // Type-safe error handling
-      if (axios.isAxiosError(err)) {
-        alert(err.response?.data?.message || "Login failed");
-      } else if (err instanceof Error) {
-        alert(err.message);
-      } else {
-        alert("Login failed");
-      }
+      if (err instanceof Error) alert(err.message);
+      else alert("Login failed");
     }
   };
 
   return (
     <div className="flex flex-col items-center justify-center h-screen p-4">
       <h1 className="text-3xl mb-4">Login</h1>
-
       <input
         type="email"
         placeholder="Email"
@@ -50,7 +40,6 @@ export default function Login() {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
-
       <input
         type="password"
         placeholder="Password"
@@ -58,7 +47,6 @@ export default function Login() {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-
       <select
         value={role}
         onChange={(e) => setRole(e.target.value as Role)}
@@ -67,7 +55,6 @@ export default function Login() {
         <option value="PATIENT">Login as Patient</option>
         <option value="DOCTOR">Login as Doctor</option>
       </select>
-
       <button
         onClick={handleLogin}
         className="bg-blue-500 text-white p-2 rounded w-64 hover:bg-blue-600 cursor-pointer select-none transition"
@@ -77,4 +64,3 @@ export default function Login() {
     </div>
   );
 }
-
