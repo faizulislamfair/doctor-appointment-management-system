@@ -59,9 +59,12 @@ A modern web application for managing doctor appointments. Patients can search f
 1. Clone the repository, install and run:
 
 ```bash
-git clone https://github.com/faizulislamfair/doctor-appointment-management-system
+git clone https://github.com/faizulislamfair/doctor-appointment-management-system.git
+
 cd doctor-appointment-management-system
+
 npm install
+
 npm run dev
 ```
 
