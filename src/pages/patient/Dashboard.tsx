@@ -82,9 +82,14 @@ export default function PatientDashboard() {
           <option value="">All Specializations</option>
           <option value="Cardiology">Cardiology</option>
           <option value="Dermatology">Dermatology</option>
+          <option value="Endocrinology">Endocrinology</option>
+          <option value="Gastroenterology">Gastroenterology</option>
           <option value="Neurology">Neurology</option>
           <option value="Oncology">Oncology</option>
+          <option value="Orthopedics">Orthopedics</option>
           <option value="Pediatrics">Pediatrics</option>
+          <option value="Psychiatry">Psychiatry</option>
+          <option value="Radiology">Radiology</option>
         </select>
         <Button onClick={() => setPage(1)}>Filter</Button>
       </div>
