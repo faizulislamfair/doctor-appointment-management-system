@@ -12,20 +12,22 @@ interface AppointmentsResponse {
 }
 
 export default function PatientAppointments() {
-  const [status, setStatus] = useState("");
-  const [page, setPage] = useState(1);
+  const [status, setStatus] = useState<string>("");
+  const [page, setPage] = useState<number>(1);
   const queryClient = useQueryClient();
 
   // Fetch patient appointments
-  const { data, isLoading } = useQuery<AppointmentsResponse, Error>({
+  const query = useQuery({
     queryKey: ["patient-appointments", page, status],
     queryFn: async (): Promise<AppointmentsResponse> => {
-      const res = await api.get<AppointmentsResponse>(`/appointments/patient`, {
+      const res = await api.get("/appointments/patient", {
         params: { page, status },
       });
-      return res.data;
+      return res.data as AppointmentsResponse;
     },
   });
+
+  const { data, isLoading } = query;
 
   // Cancel appointment mutation
   const cancelMutation = useMutation({
@@ -40,15 +42,15 @@ export default function PatientAppointments() {
     },
   });
 
-  // Destructure mutate and isLoading
-  const { mutate: cancelAppointment, isLoading: canceling } = cancelMutation;
+  const { mutate: cancelAppointment, status: cancelStatus } = cancelMutation;
+  const canceling = cancelStatus === "pending";
 
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">My Appointments</h1>
 
       {/* Filters */}
-      <div className="flex gap-2 mb-4">
+      <div className="flex gap-2 mb-4 flex-wrap">
         <select
           className="border px-3 py-2 rounded"
           value={status}
@@ -67,7 +69,7 @@ export default function PatientAppointments() {
 
       {/* Appointment List */}
       <div className="space-y-4">
-        {data?.data?.map((appt) => (
+        {data?.data?.map((appt: Appointment) => (
           <div
             key={appt.id}
             className="border rounded p-4 shadow flex justify-between items-center"
@@ -79,10 +81,7 @@ export default function PatientAppointments() {
               <p className="text-sm">Status: {appt.status}</p>
             </div>
             {appt.status === "PENDING" && (
-              <Button
-                onClick={() => cancelAppointment(appt.id)}
-                disabled={canceling}
-              >
+              <Button onClick={() => cancelAppointment(appt.id)} disabled={canceling}>
                 Cancel
               </Button>
             )}
@@ -103,10 +102,10 @@ export default function PatientAppointments() {
           <Button
             onClick={() =>
               setPage((p) =>
-                data?.totalPages ? Math.min(p + 1, data.totalPages) : p + 1
+                data.totalPages ? Math.min(p + 1, data.totalPages) : p + 1
               )
             }
-            disabled={page === data?.totalPages}
+            disabled={page === data.totalPages}
           >
             Next
           </Button>
