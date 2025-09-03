@@ -5,7 +5,7 @@ export const Button = ({
   ...props
 }: ButtonHTMLAttributes<HTMLButtonElement>) => (
   <button
-    className={`px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 ${className}`}
+    className={`px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700 cursor-pointer select-none disabled:opacity-50 ${className}`}
     {...props}
   />
 );

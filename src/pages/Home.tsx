@@ -9,7 +9,6 @@ export default function Home() {
       <h1 className="text-3xl md:text-4xl font-bold mb-8 text-center">
         Doctor Appointment Management System
       </h1>
-
       {/* Buttons */}
       <div className="flex gap-4">
         <Link to="/login">

@@ -8,6 +8,7 @@ import type { Doctor } from "../../types";
 import { Button } from "../../components/Button";
 import { Modal } from "../../components/Modal";
 
+
 interface DoctorsResponse {
   data: Doctor[];
   totalPages: number;
@@ -98,7 +99,7 @@ export default function PatientDashboard() {
       {isLoading && <p>Loading doctors...</p>}
 
       {/* Doctor List */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-7 md:grid-cols-2 lg:grid-cols-3 pt-5">
         {data?.data?.map((doc: Doctor) => (
           <div key={doc.id} className="border rounded p-4 shadow flex flex-col items-center">
             <img

@@ -118,7 +118,7 @@ export default function Register() {
 
         <button
           onClick={handleRegister}
-          className="bg-blue-500 text-white p-2 rounded mt-2"
+          className="bg-blue-500 hover:bg-blue-600 text-white cursor-pointer select-none p-2 rounded mt-2"
         >
           Register
         </button>

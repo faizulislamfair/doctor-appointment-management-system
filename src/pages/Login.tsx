@@ -70,10 +70,11 @@ export default function Login() {
 
       <button
         onClick={handleLogin}
-        className="bg-blue-500 text-white p-2 rounded w-64 hover:bg-blue-600 transition"
+        className="bg-blue-500 text-white p-2 rounded w-64 hover:bg-blue-600 cursor-pointer select-none transition"
       >
         Login
       </button>
     </div>
   );
 }
+
