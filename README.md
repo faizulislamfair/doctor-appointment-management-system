@@ -1,69 +1,104 @@
-# React + TypeScript + Vite
+# Doctor Appointment Management System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern web application for managing doctor appointments. Patients can search for doctors, filter by specialization and book appointments. Doctors can view their dashboard and manage their appointments. Built with **React (Vite)**, **React Query**, **Axios**, and **Tailwind CSS**.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Table of Contents
 
-## Expanding the ESLint configuration
+- [Live Demo](#live-demo)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Limitations](#limitations)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Live Demo
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+> [https://doctor-appointment-management-system.vercel.app/](https://doctor-appointment-management-system.vercel.app/)
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+---
+
+## Features
+
+### Patient
+
+- Login as a patient
+- Search for doctors by name
+- Filter doctors by specialization
+- View doctor details
+- Book appointments (currently not functional due to backend restriction)
+
+### Doctor
+
+- Login as a doctor
+- View appointments and schedule (currently no appointments appear due to booking issue)
+
+### Responsiveness
+
+- Responsive UI with Tailwind CSS
+
+---
+
+## Tech Stack
+
+- **Frontend:** React 19 (Vite), TypeScript, Tailwind CSS
+- **State Management:** React Query
+- **HTTP Client:** Axios
+- **Routing:** React Router
+- **Authentication:** JWT (stored in localStorage)
+
+---
+
+## Installation
+
+1. Clone the repository, install and run:
+
+```bash
+git clone https://github.com/faizulislamfair/doctor-appointment-management-system
+cd doctor-appointment-management-system
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Usage
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Login / Register
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- Choose to login as a **Patient** or **Doctor**.
+- Patients can search doctors and attempt to book appointments.
+- Doctors can log in to view their dashboards.
+
+### Search and Filter Doctors
+
+- Use the search bar to find doctors by name.
+- Use the specialization dropdown to filter by category.
+
+### Book Appointment (Patient)
+
+- Click on **Book Appointment** for any doctor.
+- Select a date and confirm.
+- _(Currently fails due to backend authentication issue)_
+
+### View Appointments (Doctor)
+
+- Doctors can access their dashboard.
+- _(No appointments will appear because booking requests fail)_
+
+---
+
+## Limitations
+
+- **Appointment Booking Fails**  
+  Booking ails with `401 Unauthorized`, this happens because the backend requires authentication that cannot be satisfied from the frontend alone.
+
+- **Doctor Dashboard Empty**  
+  Since appointments can’t be created, the doctor’s dashboard doesn’t display any patient bookings.
+
+- **No Backend Control**  
+  The backend is externally managed, and changes cannot be made to fix the authentication flow.
+
+- **Workaround**  
+  The application works fully for login, search, filter, and navigation. Appointment booking and doctor-side scheduling are not functional.
