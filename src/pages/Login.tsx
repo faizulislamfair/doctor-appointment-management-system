@@ -1,50 +1,77 @@
+"use client";
+
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import axios from "axios";
 import api from "../api/axios";
+
+type Role = "PATIENT" | "DOCTOR";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState<"PATIENT" | "DOCTOR">("PATIENT");
+  const [role, setRole] = useState<Role>("PATIENT");
   const navigate = useNavigate();
 
   const handleLogin = async () => {
     try {
-      const res = await api.post("/auth/login", { email, password, role });
+      const res = await api.post<{ token: string }>("/auth/login", {
+        email,
+        password,
+        role,
+      });
+
+      // Save the token in localStorage
       localStorage.setItem("token", res.data.token);
+
+      // Redirect based on role
       if (role === "PATIENT") navigate("/patient/dashboard");
       else navigate("/doctor/dashboard");
-    } catch (err: any) {
-      alert(err.response?.data?.message || "Login failed");
+    } catch (err: unknown) {
+      // Type-safe error handling
+      if (axios.isAxiosError(err)) {
+        alert(err.response?.data?.message || "Login failed");
+      } else if (err instanceof Error) {
+        alert(err.message);
+      } else {
+        alert("Login failed");
+      }
     }
   };
 
   return (
     <div className="flex flex-col items-center justify-center h-screen p-4">
       <h1 className="text-3xl mb-4">Login</h1>
+
       <input
         type="email"
         placeholder="Email"
-        className="border p-2 mb-2 w-64"
+        className="border p-2 mb-2 w-64 rounded"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
+
       <input
         type="password"
         placeholder="Password"
-        className="border p-2 mb-2 w-64"
+        className="border p-2 mb-2 w-64 rounded"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
+
       <select
         value={role}
-        onChange={(e) => setRole(e.target.value as "PATIENT" | "DOCTOR")}
-        className="border p-2 mb-2 w-64"
+        onChange={(e) => setRole(e.target.value as Role)}
+        className="border p-2 mb-2 w-64 rounded"
       >
         <option value="PATIENT">Login as Patient</option>
         <option value="DOCTOR">Login as Doctor</option>
       </select>
-      <button onClick={handleLogin} className="bg-blue-500 text-white p-2 rounded w-64">
+
+      <button
+        onClick={handleLogin}
+        className="bg-blue-500 text-white p-2 rounded w-64 hover:bg-blue-600 transition"
+      >
         Login
       </button>
     </div>
