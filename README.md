@@ -105,7 +105,7 @@ npm run dev
 ## Limitations
 
 - **Appointment Booking Fails**  
-  Booking ails with `401 Unauthorized`, this happens because the backend requires authentication that cannot be satisfied from the frontend alone.
+  Booking fails with `401 Unauthorized`, this happens because the backend requires authentication that cannot be satisfied from the frontend alone.
 
 - **Doctor Dashboard Empty**  
   Since appointments can’t be created, the doctor’s dashboard doesn’t display any patient bookings.
