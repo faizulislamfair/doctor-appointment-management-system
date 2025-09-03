@@ -9,6 +9,7 @@ import PatientAppointments from "./pages/patient/Appointments";
 import DoctorDashboard from "./pages/doctor/Dashboard";
 
 
+
 const queryClient = new QueryClient();
 
 export default function App() {
