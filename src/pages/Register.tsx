@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import axios from "axios";
 import api from "../api/axios";
 
 export default function Register() {
@@ -15,16 +16,33 @@ export default function Register() {
   const handleRegister = async () => {
     try {
       if (tab === "PATIENT") {
-        await api.post("/auth/register/patient", { name, email, password, photo_url: photo_url || undefined });
+        await api.post("/auth/register/patient", {
+          name,
+          email,
+          password,
+          photo_url: photo_url || undefined,
+        });
         alert("Patient registered successfully!");
       } else {
         if (!specialization) return alert("Select specialization");
-        await api.post("/auth/register/doctor", { name, email, password, photo_url: photo_url || undefined, specialization });
+        await api.post("/auth/register/doctor", {
+          name,
+          email,
+          password,
+          photo_url: photo_url || undefined,
+          specialization,
+        });
         alert("Doctor registered successfully!");
       }
+
       navigate("/login");
-    } catch (err: any) {
-      alert(err.response?.data?.message || "Registration failed");
+    } catch (error: unknown) {
+      // Type-safe error handling
+      if (axios.isAxiosError(error)) {
+        alert(error.response?.data?.message || "Registration failed");
+      } else {
+        alert("Registration failed due to an unexpected error");
+      }
     }
   };
 
@@ -35,13 +53,17 @@ export default function Register() {
       {/* Tabs */}
       <div className="flex mb-4 border-b">
         <button
-          className={`px-4 py-2 ${tab === "PATIENT" ? "border-b-2 border-blue-500 font-bold" : ""}`}
+          className={`px-4 py-2 ${
+            tab === "PATIENT" ? "border-b-2 border-blue-500 font-bold" : ""
+          }`}
           onClick={() => setTab("PATIENT")}
         >
           Patient
         </button>
         <button
-          className={`px-4 py-2 ${tab === "DOCTOR" ? "border-b-2 border-blue-500 font-bold" : ""}`}
+          className={`px-4 py-2 ${
+            tab === "DOCTOR" ? "border-b-2 border-blue-500 font-bold" : ""
+          }`}
           onClick={() => setTab("DOCTOR")}
         >
           Doctor
@@ -94,7 +116,10 @@ export default function Register() {
           </select>
         )}
 
-        <button onClick={handleRegister} className="bg-blue-500 text-white p-2 rounded mt-2">
+        <button
+          onClick={handleRegister}
+          className="bg-blue-500 text-white p-2 rounded mt-2"
+        >
           Register
         </button>
       </div>

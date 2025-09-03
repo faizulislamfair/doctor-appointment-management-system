@@ -16,17 +16,18 @@ export default function PatientAppointments() {
   const [page, setPage] = useState(1);
   const queryClient = useQueryClient();
 
+  // Fetch patient appointments
   const { data, isLoading } = useQuery<AppointmentsResponse, Error>({
     queryKey: ["patient-appointments", page, status],
     queryFn: async (): Promise<AppointmentsResponse> => {
-      const res = await api.get<AppointmentsResponse>(
-        `/appointments/patient`,
-        { params: { page, status } }
-      );
+      const res = await api.get<AppointmentsResponse>(`/appointments/patient`, {
+        params: { page, status },
+      });
       return res.data;
     },
   });
 
+  // Cancel appointment mutation
   const cancelMutation = useMutation({
     mutationFn: async (appointmentId: string) => {
       await api.patch("/appointments/update-status", {
@@ -38,6 +39,9 @@ export default function PatientAppointments() {
       queryClient.invalidateQueries({ queryKey: ["patient-appointments"] });
     },
   });
+
+  // Destructure mutate and isLoading
+  const { mutate: cancelAppointment, isLoading: canceling } = cancelMutation;
 
   return (
     <div className="p-6">
@@ -58,8 +62,10 @@ export default function PatientAppointments() {
         <Button onClick={() => setPage(1)}>Filter</Button>
       </div>
 
-      {isLoading && <p>Loading...</p>}
+      {/* Loading */}
+      {isLoading && <p>Loading appointments...</p>}
 
+      {/* Appointment List */}
       <div className="space-y-4">
         {data?.data?.map((appt) => (
           <div
@@ -74,8 +80,8 @@ export default function PatientAppointments() {
             </div>
             {appt.status === "PENDING" && (
               <Button
-                onClick={() => cancelMutation.mutate(appt.id)}
-                disabled={cancelMutation.isLoading}
+                onClick={() => cancelAppointment(appt.id)}
+                disabled={canceling}
               >
                 Cancel
               </Button>
